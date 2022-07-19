@@ -2,9 +2,16 @@
 #include "common.h"
 #include "array_defs.h"
 
+//#include <malloc/_malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef __MACH__
+#include <stdlib.h>
+#else
 #include <malloc.h>
+#endif
+
 #include <string.h>
 
 void set_1d_array(real_t * arr, int length, real_t value, int stride);
@@ -155,8 +162,13 @@ void set_2d_array(real_t arr[LEN_2D][LEN_2D], real_t value, int stride)
 }
 
 void init(int** ip, real_t* s1, real_t* s2){
+#ifdef __MACH__
+    posix_memalign((void **)&xx, ARRAY_ALIGNMENT, LEN_1D*sizeof(real_t));
+    posix_memalign((void **)&(*ip), ARRAY_ALIGNMENT, LEN_1D*sizeof(real_t));
+#else
     xx = (real_t*) memalign(ARRAY_ALIGNMENT, LEN_1D*sizeof(real_t));
     *ip = (int *) memalign(ARRAY_ALIGNMENT, LEN_1D*sizeof(real_t));
+#endif
 
     for (int i = 0; i < LEN_1D; i = i+5){
         (*ip)[i]   = (i+4);

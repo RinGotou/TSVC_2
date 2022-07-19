@@ -1,10 +1,10 @@
 
-CC=clang
-CXX=clang++
+CC=clang -g
+CXX=clang++ -g
 # no FC for clang
 FC=
 flags = -O3 -fstrict-aliasing
-vecflags = -fvectorize -fslp-vectorize-aggressive
+vecflags = -fvectorize
 novecflags = -fno-vectorize
 omp_flags=-fopenmp=libomp
 
